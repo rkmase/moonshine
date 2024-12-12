@@ -84,8 +84,15 @@ return function(moonshine)
 			vec2 coord = tc * 20.0;
 			vec2 motion = vec2(fbm(coord + vec2(time * speed.x, time * speed.y)));
 			float final = fbm(coord + motion);
-			return vec4(fog_color, final * 0.5);
-		}
+
+			// Sample the texture color
+			vec4 texColor = Texel(texture, tc);
+
+			// Blend fog with texture color
+			return mix(texColor, vec4(fog_color, 1.0), final * 0.5);
+}
+
+
 	]])
 
 	local setters = {}
